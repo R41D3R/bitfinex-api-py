@@ -100,8 +100,9 @@ class GenericWebsocket:
             socketId = len(self.sockets)
         def start_loop(loop):
             asyncio.set_event_loop(loop)
-            loop.run_until_complete(self._run_socket())
-        worker_loop = asyncio.new_event_loop()
+            # loop.run_until_complete(self._run_socket())
+            asyncio.ensure_future(self._run_socket())
+        worker_loop = asyncio.get_event_loop()
         worker = Thread(target=start_loop, args=(worker_loop,))
         worker.start()
         return socketId
